@@ -67,15 +67,15 @@ export function MobileNav({ open, onClose, menuItems }: Props) {
             <div className="flex items-center">
               <Link
                 className="px-4 py-1 flex-1 text-center"
-                href="/auth/signin"
+                href="/auth/login"
               >
-                Sign in
+                Login
               </Link>
               <Link
                 className="bg-blue-500 text-white px-4 py-1 rounded flex-1 text-center"
-                href="/auth/signup"
+                href="/auth/register"
               >
-                Sign up
+                Register
               </Link>
             </div>
           )}
