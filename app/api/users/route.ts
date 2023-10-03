@@ -7,7 +7,7 @@ export const POST = async (req: Request) => {
   const body = (await req.json()) as NewUserRequest;
 
   await startDb();
-  const newUser = UserModel.create({
+  const newUser = await UserModel.create({
     ...body,
   });
 
