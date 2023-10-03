@@ -29,8 +29,9 @@ export default function Register() {
   } = useFormik({
     initialValues: { name: "", email: "", password: "" },
     validationSchema,
-    onSubmit: (values) => {
-      fetch("/api/users", {
+    onSubmit: async (values, action) => {
+      action.setSubmitting(true);
+      await fetch("/api/users", {
         method: "POST",
         body: JSON.stringify(values),
       }).then(async (res) => {
@@ -38,6 +39,7 @@ export default function Register() {
           const result = await res.json();
           console.log(result);
         }
+        action.setSubmitting(false);
       });
     },
   });
@@ -73,7 +75,7 @@ export default function Register() {
         onChange={handleChange}
         onBlur={handleBlur}
       />
-      <Button type="submit" className="w-full">
+      <Button disabled={isSubmitting} type="submit" className="w-full">
         Register
       </Button>
       <div className="">
