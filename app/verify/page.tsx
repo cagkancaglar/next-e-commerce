@@ -2,6 +2,7 @@
 
 import { notFound, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
+import { toast } from "react-toastify";
 
 interface Props {
   searchParams: { token: string; userId: string };
@@ -22,13 +23,12 @@ export default function Verify(props: Props) {
       const { error, message } = apiRes as { message: string; error: string };
 
       if (res.ok) {
-        // success
-        console.log(message);
+        toast.success(message);
         router.replace("/");
       }
 
       if (!res.ok && error) {
-        console.log(error);
+        toast.error(error);
       }
     });
   }, []);
