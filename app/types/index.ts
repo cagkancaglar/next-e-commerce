@@ -10,7 +10,7 @@ export interface NewUserRequest {
   password: string;
 }
 
-export interface SignInCredentials {
+export interface LoginCredentials {
   email: string;
   password: string;
 }
