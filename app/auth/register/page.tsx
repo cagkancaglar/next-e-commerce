@@ -8,6 +8,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { filterFormikErrors } from "@/app/utils/formikHelpers";
 import { toast } from "react-toastify";
+import Link from "next/link";
 
 export default function Register() {
   const validationSchema = yup.object().shape({
@@ -47,6 +48,11 @@ export default function Register() {
 
   const { name, email, password } = values;
 
+  type valueKeys = keyof typeof values;
+  const error = (name: valueKeys) => {
+    return errors[name] && touched[name] ? true : false;
+  };
+
   const formErrors: string[] = filterFormikErrors(errors, touched, values);
 
   return (
@@ -58,6 +64,7 @@ export default function Register() {
         value={name}
         onChange={handleChange}
         onBlur={handleBlur}
+        error={error("name")}
       />
       <Input
         name="email"
@@ -66,6 +73,7 @@ export default function Register() {
         value={email}
         onChange={handleChange}
         onBlur={handleBlur}
+        error={error("email")}
       />
       <Input
         name="password"
@@ -75,10 +83,15 @@ export default function Register() {
         value={password}
         onChange={handleChange}
         onBlur={handleBlur}
+        error={error("password")}
       />
       <Button disabled={isSubmitting} type="submit" className="w-full">
         Register
       </Button>
+      <div className="flex items-center justify-between">
+        <Link href="/auth/login">Login</Link>
+        <Link href="/auth/forget-password">Forget password</Link>
+      </div>
       <div className="">
         {formErrors.map((err) => {
           return (
