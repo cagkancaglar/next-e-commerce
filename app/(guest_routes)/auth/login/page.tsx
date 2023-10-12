@@ -80,7 +80,7 @@ export default function Login() {
         type="password"
       />
       <Button type="submit" className="w-full" disabled={isSubmitting}>
-        Sign in
+        Login
       </Button>
       <div className="flex items-center justify-between">
         <Link href="/auth/register">Register</Link>
