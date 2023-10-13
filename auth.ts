@@ -22,10 +22,24 @@ const authConfig: NextAuthConfig = {
           return null;
         }
 
-        return { id: user.id };
+        return { id: user.id, ...user };
       },
     }),
   ],
+  callbacks: {
+    async jwt(params) {
+      if (params.user) {
+        params.token.user = params.user;
+      }
+      return params.token;
+    },
+    async session(params) {
+      if (params.token.user) {
+        params.session.user = { ...params.session.user, ...params.token.user };
+      }
+      return params.session;
+    },
+  },
 };
 
 export const {
