@@ -34,7 +34,7 @@ export const POST = async (req: Request) => {
     await EmailVerificationToken.findByIdAndDelete(verifyToken._id);
 
     return NextResponse.json({ message: "Your email is verified." });
-  } catch (err) {
+  } catch (error) {
     return NextResponse.json(
       {
         error: "could not verify email, something went wrong!",

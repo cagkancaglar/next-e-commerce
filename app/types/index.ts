@@ -23,3 +23,9 @@ export interface EmailVerifyRequest {
 export interface ForgetPasswordRequest {
   email: string;
 }
+
+export interface UpdatePasswordRequest{
+  password: string,
+  token: string,
+  userId: string
+}
