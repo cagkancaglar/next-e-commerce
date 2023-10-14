@@ -4,16 +4,18 @@ import { ForgetPasswordRequest } from "@/app/types";
 import { NextResponse } from "next/server";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
+import startDb from "@/app/lib/db";
 
-const POST = async (req: Request) => {
+export const POST = async (req: Request) => {
   try {
     const { email } = (await req.json()) as ForgetPasswordRequest;
-    const user = await UserModel.findOne({ email });
 
     if (!email) {
       return NextResponse.json({ error: "Invalid email!" }, { status: 401 });
     }
 
+    await startDb();
+    const user = await UserModel.findOne({ email });
     if (!user) {
       return NextResponse.json({ error: "User not found!" }, { status: 404 });
     }
@@ -48,6 +50,9 @@ const POST = async (req: Request) => {
 
     return NextResponse.json({ message: "Please check your email." });
   } catch (error) {
-    NextResponse.json({ error: (error as any).message }, { status: 500 });
+    return NextResponse.json(
+      { error: (error as any).message },
+      { status: 500 }
+    );
   }
 };
