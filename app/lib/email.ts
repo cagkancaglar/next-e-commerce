@@ -41,10 +41,7 @@ const sendForgetPasswordLink = async (profile: profile, linkUrl: string) => {
   });
 };
 
-const sendUpdatePasswordConfirmation = async (
-  profile: profile,
-  linkUrl: string
-) => {
+const sendUpdatePasswordConfirmation = async (profile: profile) => {
   const transport = generateMailTransporter();
 
   await transport.sendMail({
@@ -62,5 +59,7 @@ export const sendEmail = (options: EmailOptions) => {
       return sendEmailVerificationLink(profile, linkUrl!);
     case "forget-password":
       return sendForgetPasswordLink(profile, linkUrl!);
+    case "password-changed":
+      return sendUpdatePasswordConfirmation(profile);
   }
 };
