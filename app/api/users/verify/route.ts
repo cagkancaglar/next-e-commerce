@@ -1,5 +1,5 @@
-import EmailVerificationToken from "@/app/models/emailVerificationToken";
-import UserModel from "@/app/models/userModel";
+import EmailVerificationToken from "@models/emailVerificationToken";
+import UserModel from "@models/userModel";
 import { EmailVerifyRequest } from "@/app/types";
 import { isValidObjectId } from "mongoose";
 import { NextResponse } from "next/server";

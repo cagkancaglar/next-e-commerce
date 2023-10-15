@@ -3,8 +3,8 @@ import PasswordResetTokenModel from "@models/passwordResetTokenModel";
 import { UpdatePasswordRequest } from "@/app/types";
 import { isValidObjectId } from "mongoose";
 import { NextResponse } from "next/server";
-import UserModel from "@/app/models/userModel";
-import nodemailer from "nodemailer";
+import UserModel from "@models/userModel";
+import { sendEmail } from "@lib/email";
 
 export const POST = async (req: Request) => {
   try {
@@ -44,26 +44,15 @@ export const POST = async (req: Request) => {
 
     await PasswordResetTokenModel.findByIdAndDelete(resetToken._id);
 
-    const transport = nodemailer.createTransport({
-      host: "sandbox.smtp.mailtrap.io",
-      port: 2525,
-      auth: {
-        user: "196b9845497f3c",
-        pass: "812b27a056ad4a",
-      },
-    });
-
-    await transport.sendMail({
-      from: "verification@nextecom.com",
-      to: user.email,
-      html: `<h1>Your password is now changed.</h1>`,
+    await sendEmail({
+      profile: { name: user.name, email: user.email },
+      subject: "password-changed",
     });
 
     return NextResponse.json(
       { message: "Your password is now changed" },
       { status: 200 }
     );
-    
   } catch (error) {
     return NextResponse.json(
       {
