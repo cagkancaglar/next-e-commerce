@@ -38,7 +38,7 @@ export default function Verify(props: Props) {
   return (
     <div className="text-3xl opacity-70 text-center p-5 animate-pulse">
       <p>Please wait...</p>
-      <p> We are verifing your email</p>
+      <p> We are verifying your email</p>
     </div>
   );
 }
