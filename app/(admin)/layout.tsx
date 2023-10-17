@@ -1,8 +1,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import React, { ReactNode } from "react";
-import EmailVerificationBanner from "@components/EmailVerificationBanner";
-import Navbar from "@components/navbar";
+import AdminSidebar from "@components/AdminSidebar";
 
 interface Props {
   children: ReactNode;
@@ -10,16 +9,12 @@ interface Props {
 
 export default async function PrivateLayout({ children }: Props) {
   const session = await auth();
+  const user = session.user;
+  const isAdmin = user.role === "admin";
 
-  if (!session) {
+  if (!isAdmin) {
     return redirect("/auth/login");
   }
 
-  return (
-    <div className="max-w-screen-xl mx-auto p-4 xl:p-0">
-      <Navbar />
-      <EmailVerificationBanner />
-      {children}
-    </div>
-  );
+  return <AdminSidebar>{children}</AdminSidebar>;
 }
