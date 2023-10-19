@@ -9,6 +9,13 @@ cloudinary.config({
   secure: true,
 });
 
+export const getCloudConfig = async () => {
+  return {
+    name: process.env.CLOUD_NAME!,
+    key: process.env.CLOUD_API_KEY!,
+  };
+};
+
 //generate our cloud signature
 export const getCloudSignature = async () => {
   const secret = cloudinary.config().api_secret!;
