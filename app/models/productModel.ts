@@ -1,7 +1,7 @@
-import { Document, Model, Schema, model, models } from "mongoose";
+import { Model, Schema, model, models } from "mongoose";
 import categories from "../utils/categories";
 
-interface ProductDocument extends Document {
+export interface Product {
   title: string;
   description: string;
   bulletPoints?: string[];
@@ -11,9 +11,13 @@ interface ProductDocument extends Document {
     base: number;
     discounted: number;
   };
-  sale: number;
   quantity: number;
   category: string;
+}
+
+interface ProductDocument extends Product {
+  //virtual property
+  sale: number;
 }
 
 const productSchema = new Schema<ProductDocument>(

@@ -6,12 +6,34 @@ import React from "react";
 import { ValidationError } from "yup";
 import { toast } from "react-toastify";
 import { uploadImage } from "@/app/utils/helper";
+import { createProduct } from "../action";
 
 export default function Create() {
   const handleCreateProduct = async (values: NewProductInfo) => {
     try {
-      // await newProductInfoSchema.validate(values, { abortEarly: false });
-      await uploadImage(values.thumbnail!)
+      const { thumbnail, images } = values;
+      await newProductInfoSchema.validate(values, { abortEarly: false });
+      const thumbnailRes = await uploadImage(thumbnail!);
+
+      let productImages: { url: string; id: string }[] = [];
+      if (images) {
+        const uploadPromise = images.map(async (imageFile) => {
+          const { id, url } = await uploadImage(imageFile);
+          return { id, url };
+        });
+
+        productImages = await Promise.all(uploadPromise);
+      }
+
+      await createProduct({
+        ...values,
+        price: {
+          base: values.mrp,
+          discounted: values.salePrice,
+        },
+        thumbnail: thumbnailRes,
+        images: productImages,
+      });
     } catch (error) {
       if (error instanceof ValidationError) {
         error.inner.map((err) => {
