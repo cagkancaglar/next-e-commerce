@@ -1,7 +1,7 @@
 import { Model, Schema, model, models } from "mongoose";
 import categories from "../utils/categories";
 
-export interface Product {
+export interface NewProduct {
   title: string;
   description: string;
   bulletPoints?: string[];
@@ -15,7 +15,7 @@ export interface Product {
   category: string;
 }
 
-interface ProductDocument extends Product {
+interface ProductDocument extends NewProduct {
   //virtual property
   sale: number;
 }
@@ -44,6 +44,10 @@ const productSchema = new Schema<ProductDocument>(
     category: {
       type: String,
       enum: [...categories],
+      required: true,
+    },
+    quantity: {
+      type: Number,
       required: true,
     },
   },

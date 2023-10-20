@@ -1,7 +1,7 @@
 "use server";
 
 import startDb from "@/app/lib/db";
-import ProductModel, { Product } from "@/app/models/productModel";
+import ProductModel, { NewProduct } from "@/app/models/productModel";
 import { v2 as cloudinary } from "cloudinary";
 
 cloudinary.config({
@@ -32,7 +32,7 @@ export const getCloudSignature = async () => {
   return { timestamp, signature };
 };
 
-export const createProduct = async (info: Product) => {
+export const createProduct = async (info: NewProduct) => {
   try {
     await startDb();
     await ProductModel.create({ ...info });
