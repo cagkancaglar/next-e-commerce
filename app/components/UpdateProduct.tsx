@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import { ProductResponse } from "@/app/types";
 import ProductForm, { InitialValue } from "./ProductForm";
@@ -19,7 +19,12 @@ export default function UpdateProduct({ product }: Props) {
 
   return (
     <div>
-      <ProductForm initialValue={initialValue} />
+      <ProductForm
+        initialValue={initialValue}
+        onSubmit={(values) => {
+          console.log(values);
+        }}
+      />
     </div>
   );
 }

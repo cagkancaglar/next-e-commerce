@@ -41,3 +41,7 @@ export const createProduct = async (info: NewProduct) => {
     throw new Error("Someting went wrong, can not create product!");
   }
 };
+
+export const removeImageFromCloud = async (publicId: string) => {
+  await cloudinary.uploader.destroy(publicId);
+};
