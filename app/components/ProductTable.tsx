@@ -86,7 +86,7 @@ export default function ProductTable(props: Props) {
             href="/products/create"
             className="select-none font-bold text-center uppercase transition-all text-xs py-2 px-4 rounded-lg bg-blue-500 text-white shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none flex items-center gap-3"
           >
-            <PlusIcon strokeWidth={2} className="h-4 w-4" />{" "}
+            <PlusIcon strokeWidth={2} className="h-4 w-4" /> &nbsp;
             <span>Add New</span>
           </Link>
         </div>
