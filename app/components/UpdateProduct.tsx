@@ -1,8 +1,16 @@
 "use client";
 import React from "react";
-import { ProductResponse } from "@/app/types";
+import { NewProductInfo, ProductResponse, ProductToUpdate } from "@/app/types";
 import ProductForm, { InitialValue } from "./ProductForm";
-import { removeAndUpdateProductImage } from "../(admin)/products/action";
+import {
+  removeAndUpdateProductImage,
+  removeImageFromCloud,
+  updateProduct,
+} from "../(admin)/products/action";
+import { updateProductInfoSchema } from "@utils/validationSchema";
+import { ValidationError } from "yup";
+import { toast } from "react-toastify";
+import { uploadImage } from "@utils/helper";
 
 interface Props {
   product: ProductResponse;
@@ -26,14 +34,52 @@ export default function UpdateProduct({ product }: Props) {
     removeAndUpdateProductImage(product.id, publicId);
   };
 
+  const handleOnSubmit = async (values: NewProductInfo) => {
+    try {
+      const { thumbnail, images } = values;
+      await updateProductInfoSchema.validate(values, { abortEarly: false });
+
+      const dataToUpdate: ProductToUpdate = {
+        title: values.title,
+        description: values.description,
+        bulletPoints: values.bulletPoints,
+        category: values.category,
+        quantity: values.quantity,
+        price: {
+          base: values.mrp,
+          discounted: values.salePrice,
+        },
+      };
+
+      if (thumbnail) {
+        await removeImageFromCloud(product.thumbnail.id);
+        const { id, url } = await uploadImage(thumbnail);
+        dataToUpdate.thumbnail = { id, url };
+      }
+
+      if (images.length) {
+        const uploadPromise = images.map(async (imgFile) => {
+          return await uploadImage(imgFile);
+        });
+        dataToUpdate.images = await Promise.all(uploadPromise);
+      }
+
+      await updateProduct(product.id, dataToUpdate);
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        error.inner.map((err) => {
+          toast.error(err.message);
+        });
+      }
+    }
+  };
+
   return (
     <div>
       <ProductForm
         onImageRemove={handleImageRemove}
         initialValue={initialValue}
-        onSubmit={(values) => {
-          console.log(values);
-        }}
+        onSubmit={handleOnSubmit}
       />
     </div>
   );
