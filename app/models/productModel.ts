@@ -57,7 +57,9 @@ const productSchema = new Schema<ProductDocument>(
 );
 
 productSchema.virtual("sale").get(function (this: ProductDocument) {
-  return (this.price.base - this.price.discounted) / this.price.base;
+  return Math.round(
+    ((this.price.base - this.price.discounted) / this.price.base) * 100
+  );
 });
 
 const ProductModel =
