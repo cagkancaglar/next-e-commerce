@@ -41,8 +41,8 @@ export default async function Home() {
   const parsedProducts = JSON.parse(latestProducts) as LatestProduct[];
   return (
     <GridView>
-      {parsedProducts.map((product) => {
-        return <ProductCard product={product}></ProductCard>;
+      {parsedProducts.map((product, i) => {
+        return <ProductCard key={i} product={product}></ProductCard>;
       })}
     </GridView>
   );
