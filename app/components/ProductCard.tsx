@@ -11,6 +11,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import truncate from "truncate";
+import { formatPrice } from "../utils/helper";
 
 interface Props {
   product: {
@@ -49,10 +50,10 @@ export default function ProductCard({ product }: Props) {
           </div>
           <div className="flex justify-end items-center space-x-2 mb-2">
             <Typography color="blue-gray" className="font-medium line-through">
-              ${product.price.base}
+              {formatPrice(product.price.base)}
             </Typography>
             <Typography color="blue-gray" className="font-medium">
-              ${product.price.discounted}
+              {formatPrice(product.price.discounted)}
             </Typography>
           </div>
           <p className="font-normal text-sm opacity-75 line-clamp-3">

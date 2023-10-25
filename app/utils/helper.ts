@@ -20,3 +20,12 @@ export const uploadImage = async (file: File) => {
 
   return { url: data.secure_url, id: data.public_id };
 };
+
+export const formatPrice = (amount: number) => {
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
+  return formatter.format(amount);
+};
