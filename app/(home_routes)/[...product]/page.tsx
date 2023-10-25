@@ -35,6 +35,11 @@ export default async function Product({ params }: Props) {
   const productId = product[1];
   const productInfo = JSON.parse(await fetchProduct(productId));
 
+  let productImages = [productInfo.thumbnail];
+  if (productInfo.images) {
+    productImages = productImages.concat(productInfo.images);
+  }
+
   return (
     <div className="p-4">
       <ProductView
@@ -43,7 +48,7 @@ export default async function Product({ params }: Props) {
         price={productInfo.price}
         sale={productInfo.sale}
         points={productInfo.bulletPoints}
-        images={productInfo.images}
+        images={productImages}
       />
     </div>
   );

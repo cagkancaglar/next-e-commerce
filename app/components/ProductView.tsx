@@ -1,5 +1,6 @@
 import React from "react";
 import BuyingOptions from "@components/BuyingOptions";
+import ProductImageGallery from "@components/ProductImageGallery";
 import { formatPrice } from "@utils/helper";
 
 interface Props {
@@ -21,6 +22,11 @@ export default function ProductView({
 }: Props) {
   return (
     <div className="flex lg:flex-row flex-col md:gap-4 gap-2">
+      <div className="flex-1 lg:self-start self-center">
+        {/* Product Image Slider */}
+        <ProductImageGallery images={images} />
+      </div>
+
       <div className="flex-1 md:space-y-4 space-y-2">
         <h1 className="md:text-3xl text-xl font-semibold">{title}</h1>
         <p>{description}</p>
