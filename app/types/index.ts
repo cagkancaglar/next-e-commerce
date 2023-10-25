@@ -86,3 +86,8 @@ export interface ProductToUpdate {
   thumbnail?: { url: string; id: string };
   images?: { url: string; id: string }[];
 }
+
+export interface NewCartRequest{
+  productId: string,
+  quantity: number
+}
