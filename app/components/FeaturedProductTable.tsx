@@ -77,7 +77,7 @@ export default function FeaturedProductTable({ products }: Props) {
                     <div className="flex items-center">
                       <Link
                         className="font-semibold uppercase text-xs text-blue-400 hover:underline"
-                        href={`/products/featured/update/${id}`}
+                        href={`/products/featured/update?id=${id}`}
                       >
                         Edit
                       </Link>
