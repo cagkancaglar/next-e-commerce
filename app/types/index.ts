@@ -87,7 +87,14 @@ export interface ProductToUpdate {
   images?: { url: string; id: string }[];
 }
 
-export interface NewCartRequest{
-  productId: string,
-  quantity: number
+export interface NewCartRequest {
+  productId: string;
+  quantity: number;
+}
+
+export interface NewFeaturedProduct {
+  banner: { url: string; id: string };
+  link: string;
+  linkTitle: string;
+  title: string;
 }

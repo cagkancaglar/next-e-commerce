@@ -2,8 +2,16 @@
 
 import { Button, Input } from "@material-tailwind/react";
 import Image from "next/image";
-import React, { ChangeEventHandler, useEffect, useState } from "react";
+import React, {
+  ChangeEventHandler,
+  useEffect,
+  useState,
+  useTransition,
+} from "react";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
+import { uploadImage } from "../utils/helper";
+import { createFeaturedProduct } from "../(admin)/products/featured/action";
 
 export interface FeaturedProduct {
   file?: File;
@@ -61,6 +69,7 @@ const defaultProduct = {
 };
 
 export default function FeaturedProductForm({ initialValue }: Props) {
+  const [isPending, startTransition] = useTransition();
   const [isForUpdate, setIsForUpdate] = useState(false);
   const [featuredProduct, setFeaturedProduct] =
     useState<FeaturedProduct>(defaultProduct);
@@ -72,6 +81,34 @@ export default function FeaturedProductForm({ initialValue }: Props) {
       const file = files[0];
       if (file) setFeaturedProduct({ ...featuredProduct, file });
     } else setFeaturedProduct({ ...featuredProduct, [name]: value });
+  };
+
+  const handleUpdate = () => {};
+
+  const handleCreate = async () => {
+    try {
+      const { file, link, linkTitle, title } =
+        await newFeaturedProductValidationSchema.validate(
+          { ...featuredProduct },
+          {
+            abortEarly: false,
+          }
+        );
+
+      const banner = await uploadImage(file);
+      await createFeaturedProduct({ banner, link, linkTitle, title });
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        error.inner.map((err) => {
+          toast.error(err.message);
+        });
+      }
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (isForUpdate) await handleUpdate();
+    else await handleCreate();
   };
 
   useEffect(() => {
@@ -88,7 +125,14 @@ export default function FeaturedProductForm({ initialValue }: Props) {
   const { link, linkTitle, title } = featuredProduct;
 
   return (
-    <form className="py-4 space-y-4">
+    <form
+      className="py-4 space-y-4"
+      action={() =>
+        startTransition(async () => {
+          await handleSubmit();
+        })
+      }
+    >
       <label htmlFor="banner-file">
         <input
           type="file"
@@ -126,14 +170,16 @@ export default function FeaturedProductForm({ initialValue }: Props) {
         />
         <Input
           crossOrigin={undefined}
-          label="Lik Title"
+          label="Link Title"
           name="linkTitle"
           value={linkTitle}
           onChange={handleChange}
         />
       </div>
       <div className="text-right">
-        <Button type="submit">{isForUpdate ? "Update" : "Submit"}</Button>
+        <Button disabled={isPending} type="submit">
+          {isForUpdate ? "Update" : "Submit"}
+        </Button>
       </div>
     </form>
   );
