@@ -11,12 +11,14 @@ import { updateProductInfoSchema } from "@utils/validationSchema";
 import { ValidationError } from "yup";
 import { toast } from "react-toastify";
 import { extractPublicId, uploadImage } from "@utils/helper";
+import { useRouter } from "next/navigation";
 
 interface Props {
   product: ProductResponse;
 }
 
 export default function UpdateProduct({ product }: Props) {
+  const router = useRouter();
   const initialValue: InitialValue = {
     ...product,
     thumbnail: product.thumbnail.url,
@@ -63,6 +65,8 @@ export default function UpdateProduct({ product }: Props) {
       }
 
       await updateProduct(product.id, dataToUpdate);
+      router.refresh();
+      router.push("/products");
     } catch (error) {
       if (error instanceof ValidationError) {
         error.inner.map((err) => {
