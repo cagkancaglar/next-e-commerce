@@ -32,6 +32,7 @@ export default function Verify(props: Props) {
 
       router.replace("/");
     });
+    // eslint-disable-next-line
   }, []);
 
   if (!token || !userId) return notFound();

@@ -121,6 +121,7 @@ export default function ProductForm(props: Props) {
       setProductImagesSource(initialValue.images);
       setIsForUpdate(true);
     }
+    // eslint-disable-next-line
   }, []);
 
   const onImagesChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {

@@ -34,10 +34,10 @@ interface Props {
 
 export default function ProductCard({ product }: Props) {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const addToCart = async () => {
     const { loggedIn } = useAuth();
-    const router = useRouter();
 
     if (!loggedIn) return router.push("/auth/login");
 
