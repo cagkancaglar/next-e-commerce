@@ -2,7 +2,9 @@ import React from "react";
 import startDb from "@lib/db";
 import ProductModel from "@models/productModel";
 import GridView from "@components/GridView";
-import ProductCard from "../components/ProductCard";
+import ProductCard from "@components/ProductCard";
+import FeaturedProductsSlider from "@components/FeaturedProductsSlider";
+import FeaturedProductModel from "@models/featuredProduct";
 
 interface LatestProduct {
   id: string;
@@ -36,14 +38,34 @@ const fetchLatestProducts = async () => {
   return JSON.stringify(productList);
 };
 
+const fetchFeaturedProducts = async () => {
+  await startDb();
+  const products = await FeaturedProductModel.find().sort("-createdAt");
+
+  return products.map(({ _id, title, banner, link, linkTitle }) => {
+    return {
+      id: _id.toString(),
+      title: title,
+      banner: banner.url,
+      link: link,
+      linkTitle: linkTitle,
+    };
+  });
+};
+
 export default async function Home() {
   const latestProducts = await fetchLatestProducts();
   const parsedProducts = JSON.parse(latestProducts) as LatestProduct[];
+  const featuredProducts = await fetchFeaturedProducts();
+
   return (
-    <GridView>
-      {parsedProducts.map((product, i) => {
-        return <ProductCard key={i} product={product}></ProductCard>;
-      })}
-    </GridView>
+    <div className="my-4 space-y-4">
+      <FeaturedProductsSlider products={featuredProducts} />
+      <GridView>
+        {parsedProducts.map((product, i) => {
+          return <ProductCard key={i} product={product}></ProductCard>;
+        })}
+      </GridView>
+    </div>
   );
 }
