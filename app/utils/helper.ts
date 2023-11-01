@@ -29,3 +29,10 @@ export const formatPrice = (amount: number) => {
 
   return formatter.format(amount);
 };
+
+export const extractPublicId = (url: string) => {
+  const splittedData = url.split("/");
+  const lastItem = splittedData[splittedData.length - 1];
+
+  return lastItem.split(".")[0];
+};
