@@ -5,7 +5,7 @@ import GridView from "@components/GridView";
 import ProductCard from "@components/ProductCard";
 import FeaturedProductsSlider from "@components/FeaturedProductsSlider";
 import FeaturedProductModel from "@models/featuredProduct";
-import HorizontalMenu from "../components/HorizontalMenu";
+import HorizontalMenu from "@components/HorizontalMenu";
 
 interface LatestProduct {
   id: string;
