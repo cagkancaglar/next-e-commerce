@@ -1,19 +1,20 @@
 "use client";
 import React, { useState } from "react";
-import useAuth from "@hooks/useAuth";
 import { toast } from "react-toastify";
 
-export default function EmailVerificationBanner() {
-  const { profile } = useAuth();
+interface Props {
+  id: string;
+  verified: boolean;
+}
+
+export default function EmailVerificationBanner({ id, verified }: Props) {
   const [submitting, setSubmitting] = useState(false);
 
-  if (profile?.verified) return null;
-
   const applyForReverification = async () => {
-    if (!profile) return;
+    if (!id) return;
 
     setSubmitting(true);
-    const res = await fetch("/api/users/verify?userId=" + profile.id, {
+    const res = await fetch("/api/users/verify?userId=" + id, {
       method: "GET",
     });
 
@@ -26,6 +27,8 @@ export default function EmailVerificationBanner() {
     toast.success(message);
     setSubmitting(false);
   };
+
+  if (verified) return null;
 
   return (
     <div className="p-2 text-center bg-blue-50">

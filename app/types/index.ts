@@ -61,11 +61,10 @@ export interface ProductResponse {
     discounted: number;
   };
   bulletPoints?: string[];
-  images?:
-    | {
-        url: string;
-        id: string;
-      }[];
+  images?: {
+    url: string;
+    id: string;
+  }[];
   thumbnail: {
     url: string;
     id: string;
@@ -104,4 +103,10 @@ export interface FeaturedProductForUpdate {
   link: string;
   linkTitle: string;
   title: string;
+}
+
+export interface UserProfileToUpdate {
+  avatar?: { url: string; id: string };
+  name: string;
+  id: string;
 }
