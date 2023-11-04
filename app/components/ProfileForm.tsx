@@ -67,7 +67,7 @@ export default function ProfileForm({ id, name, avatar, email }: Props) {
           className="w-full shadow-none hover:shadow-none hover:scale-[0.98]"
           color="blue"
         >
-          Submit
+          {isPending ? "Submitting" : "Submit"}
         </Button>
       ) : null}
     </form>
