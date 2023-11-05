@@ -1,5 +1,5 @@
-import startDb from "@/app/lib/db";
-import CartModel from "@/app/models/cartModel";
+import startDb from "@lib/db";
+import CartModel from "@models/cartModel";
 import { NewCartRequest } from "@/app/types";
 import { auth } from "@/auth";
 import { isValidObjectId } from "mongoose";
