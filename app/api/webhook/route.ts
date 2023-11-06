@@ -3,6 +3,8 @@ import OrderModel from "@models/orderModel";
 import { StripeCustomer } from "@/app/types";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
+import ProductModel from "@models/productModel";
+import CartModel from "@models/cartModel";
 
 const stripeSecret = process.env.STRIPE_SECRET_KEY!;
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
@@ -50,7 +52,7 @@ export const POST = async (req: Request) => {
     if (type === "checkout") {
       const cartItems = await getCartItems(userId, cartId);
 
-      OrderModel.create({
+      await OrderModel.create({
         userId,
         stripeCustomerId: stripeSession.customer,
         paymentIntent: stripeSession.payment_intent,
@@ -64,9 +66,19 @@ export const POST = async (req: Request) => {
         deliveryStatus: "ordered",
         orderItems: cartItems.products,
       });
-    }
 
-    // recount our stock
+      // recount our stock
+      const updateProductPromises = cartItems.products.map(async (product) => {
+        return await ProductModel.findByIdAndUpdate(product.id, {
+          $inc: { quantity: -product.qty },
+        });
+      });
+
+      await Promise.all(updateProductPromises);
+
+      // remove the cart
+      await CartModel.findByIdAndDelete(cartId);
+    }
   }
 
   return NextResponse.json({});
