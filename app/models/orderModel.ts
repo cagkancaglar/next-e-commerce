@@ -40,7 +40,7 @@ interface OrderDocument extends Document {
 
 const orderSchema = new Schema<OrderDocument>(
   {
-    userId: { type: Types.ObjectId, required: true },
+    userId: { type: Types.ObjectId, ref: "User", required: true },
     stripeCustomerId: { type: String, required: true },
     paymentIntent: { type: String, required: true },
     totalAmount: { type: Number, required: true },
