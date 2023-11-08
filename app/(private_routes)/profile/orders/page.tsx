@@ -1,7 +1,37 @@
-import React from 'react'
+import { auth } from "@/auth";
+import startDb from "@lib/db";
+import OrderModel from "@models/orderModel";
+import { redirect } from "next/navigation";
+import React from "react";
 
-export default function Order() {
-  return (
-    <div>Order</div>
-  )
+const fetchOrders = async () => {
+  const session = await auth();
+
+  if (!session?.user) {
+    return null;
+  }
+
+  await startDb();
+  const orders = await OrderModel.find({ userId: session.user.id });
+  const result = orders.map((order) => {
+    return {
+      id: order._id.toString(),
+      paymentStatus: order.paymentStatus,
+      date: order.createdAt.toString(),
+      total: order.totalAmount,
+      deliveryStatus: order.deliveryStatus,
+      products: order.orderItems,
+    };
+  });
+
+  return JSON.stringify(result);
+};
+
+export default async function Order() {
+  const result = await fetchOrders();
+  if (!result) {
+    return redirect("/404");
+  }
+
+  return <div>{result}</div>;
 }
