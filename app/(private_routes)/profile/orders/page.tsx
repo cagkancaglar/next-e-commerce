@@ -1,3 +1,4 @@
+import OrderListPublic, { Orders } from "@components/OrderListPublic";
 import { auth } from "@/auth";
 import startDb from "@lib/db";
 import OrderModel from "@models/orderModel";
@@ -13,7 +14,7 @@ const fetchOrders = async () => {
 
   await startDb();
   const orders = await OrderModel.find({ userId: session.user.id });
-  const result = orders.map((order) => {
+  const result: Orders[] = orders.map((order) => {
     return {
       id: order._id.toString(),
       paymentStatus: order.paymentStatus,
@@ -33,5 +34,9 @@ export default async function Order() {
     return redirect("/404");
   }
 
-  return <div>{result}</div>;
+  return (
+    <div>
+      <OrderListPublic orders={JSON.parse(result)} />
+    </div>
+  );
 }
