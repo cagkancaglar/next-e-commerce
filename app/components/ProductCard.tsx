@@ -51,6 +51,24 @@ export default function ProductCard({ product }: Props) {
     router.refresh();
   };
 
+  const handleCheckout = async () => {
+    const res = await fetch("/api/checkout/instant", {
+      method: "POST",
+      body: JSON.stringify({
+        productId: product.id,
+      }),
+    });
+
+    const { error, url } = await res.json();
+
+    if (!res.ok) {
+      toast.error(error);
+    } else {
+      // open the checkout url
+      window.location.href = url;
+    }
+  };
+
   return (
     <Card className="w-full">
       <Link className="w-full" href={`/${product.title}/${product.id}`}>
@@ -96,6 +114,11 @@ export default function ProductCard({ product }: Props) {
           Add to Cart
         </Button>
         <Button
+          onClick={() => {
+            startTransition(async () => {
+              await handleCheckout();
+            });
+          }}
           disabled={isPending}
           ripple={false}
           fullWidth={true}
