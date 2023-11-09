@@ -14,12 +14,12 @@ export const POST = async (req: Request) => {
     );
   }
 
-  const { productId, userId, comment, rating } =
+  const { productId, comment, rating } =
     (await req.json()) as ReviewRequestBody;
 
-  if (!isValidObjectId(productId) || !isValidObjectId(userId)) {
+  if (!isValidObjectId(productId)) {
     return NextResponse.json(
-      { error: "Invalid product/user id!" },
+      { error: "Invalid product id!" },
       { status: 401 }
     );
   }
@@ -27,6 +27,8 @@ export const POST = async (req: Request) => {
   if (rating <= 0 || rating > 5) {
     return NextResponse.json({ error: "Invalid rating!" }, { status: 401 });
   }
+
+  const userId = session.user.id;
 
   const data = {
     userId,

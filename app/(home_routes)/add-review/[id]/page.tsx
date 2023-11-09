@@ -1,10 +1,18 @@
 import ReviewForm from "@components/ReviewForm";
 import React from "react";
 
-export default function Review() {
+interface Props {
+  params: { id: string }
+}
+
+
+export default function Review({ params }: Props) {
+
+  const productId = params.id;
+
   return (
-    <div>
-      <ReviewForm productId="" />
+    <div className="p-4">
+      <ReviewForm productId={productId} />
     </div>
   );
 }

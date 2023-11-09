@@ -138,7 +138,6 @@ export interface StripeCustomer {
 
 export interface ReviewRequestBody {
   productId: string;
-  userId: string;
   comment?: string;
   rating: number;
 }
