@@ -11,8 +11,9 @@ export interface NewProduct {
     base: number;
     discounted: number;
   };
-  quantity: number;
   category: string;
+  quantity: number;
+  rating?: number;
 }
 
 interface ProductDocument extends NewProduct {
@@ -49,6 +50,9 @@ const productSchema = new Schema<ProductDocument>(
     quantity: {
       type: Number,
       required: true,
+    },
+    rating: {
+      type: Number,
     },
   },
   {

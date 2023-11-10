@@ -46,7 +46,7 @@ const fetchProductReviews = async (productId: string) => {
     id: r._id.toString(),
     rating: r.rating,
     comment: r.comment,
-    date: r.createAt,
+    date: r.createdAt,
     userInfo: {
       id: r.userId._id.toString(),
       name: r.userId.name,
