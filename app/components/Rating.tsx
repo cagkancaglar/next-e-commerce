@@ -21,7 +21,9 @@ export default function Rating({ value }: Props) {
           <StarIcon.Empty key={index} />
         );
       })}
-      <span className="font-semibold text-sm">{value}</span>
+      <span className="font-semibold text-sm">
+        {parseFloat(value.toFixed(1))}
+      </span>
     </div>
   );
 }
