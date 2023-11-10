@@ -1,7 +1,9 @@
+import ReviewsList from "@components/ReviewsList";
+import ReviewModel from "@models/reviewModel";
 import ProductView from "@components/ProductView";
 import startDb from "@lib/db";
 import ProductModel from "@models/productModel";
-import { isValidObjectId } from "mongoose";
+import { ObjectId, isValidObjectId } from "mongoose";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -31,6 +33,30 @@ const fetchProduct = async (productId: string) => {
   });
 };
 
+const fetchProductReviews = async (productId: string) => {
+  await startDb();
+  const reviews = await ReviewModel.find({ product: productId }).populate<{
+    userId: { _id: ObjectId; name: string; avatar?: { url: string } };
+  }>({
+    path: "userId",
+    select: "name avatar.url",
+  });
+
+  const result = reviews.map((r) => ({
+    id: r._id.toString(),
+    rating: r.rating,
+    comment: r.comment,
+    date: r.createAt,
+    userInfo: {
+      id: r.userId._id.toString(),
+      name: r.userId.name,
+      avatar: r.userId.avatar?.url,
+    },
+  }));
+
+  return JSON.stringify(result);
+};
+
 export default async function Product({ params }: Props) {
   const { product } = params;
   const productId = product[1];
@@ -40,6 +66,8 @@ export default async function Product({ params }: Props) {
   if (productInfo.images) {
     productImages = productImages.concat(productInfo.images);
   }
+
+  const reviews = await fetchProductReviews(productId);
 
   return (
     <div className="p-4">
@@ -57,6 +85,8 @@ export default async function Product({ params }: Props) {
           <h1 className="text-2xl font-semibold mb-2">Review</h1>
           <Link href={`/add-review/${productInfo.id}`}>Add Review</Link>
         </div>
+
+        <ReviewsList reviews={JSON.parse(reviews)} />
       </div>
     </div>
   );

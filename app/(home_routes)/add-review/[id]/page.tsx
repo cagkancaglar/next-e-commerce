@@ -4,6 +4,7 @@ import ReviewForm from "@components/ReviewForm";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import React from "react";
+import startDb from "@lib/db";
 
 interface Props {
   params: { id: string };
@@ -15,6 +16,7 @@ const fetchReview = async (productId: string) => {
     return redirect("/auth/login");
   }
 
+  await startDb();
   const review = await ReviewModel.findOne({
     userId: session.user.id,
     product: productId,
