@@ -4,7 +4,7 @@ import { Button, Rating } from "@material-tailwind/react";
 import { StarIcon as RatedIcon } from "@heroicons/react/24/solid";
 import { StarIcon as UnratedIcon } from "@heroicons/react/24/outline";
 import React, { useState, FormEventHandler, useEffect } from "react";
-import { toast } from "react-toastify"
+import { toast } from "react-toastify";
 
 interface Props {
   productId: string;
@@ -22,7 +22,7 @@ export default function ReviewForm({ productId, initialValue }: Props) {
     e.preventDefault();
     const { comment, rating } = review;
     if (!rating) {
-      return toast.error("Rating is missing!")
+      return toast.error("Rating is missing!");
     }
 
     setIsPending(true);
@@ -30,18 +30,19 @@ export default function ReviewForm({ productId, initialValue }: Props) {
     const res = await fetch("/api/product/review", {
       method: "POST",
       body: JSON.stringify({
-        comment, rating, productId
-      })
-    })
+        comment,
+        rating,
+        productId,
+      }),
+    });
 
     const { error } = await res.json();
 
     setIsPending(false);
 
     if (!res.ok) {
-      return toast.error(error)
+      return toast.error(error);
     }
-
   };
 
   useEffect(() => {
