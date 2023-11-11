@@ -20,7 +20,12 @@ interface Props {
 
 export default function SalesChart({ data }: Props) {
   return (
-    <LineChart width={600} height={400} data={data}>
+    <LineChart
+      margin={{ left: 50, top: 20 }}
+      width={600}
+      height={400}
+      data={data}
+    >
       <Line type="monotone" dataKey="sale" stroke="#8884d8" />
       <XAxis dataKey="day" />
       <YAxis dataKey="sale" tickFormatter={(value) => formatPrice(value)} />

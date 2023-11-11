@@ -3,6 +3,8 @@ import React from "react";
 import dateFormat from "dateformat";
 import startDb from "@lib/db";
 import SalesChart from "@components/SalesChart";
+import GridView from "@components/GridView";
+import { formatPrice } from "@utils/helper";
 
 const sevenDaysSalesHistory = async () => {
   // calculate the date: 7 days ago
@@ -57,7 +59,23 @@ export default async function Sales() {
 
   return (
     <div>
-      <SalesChart data={salesData.sales} />
+      <GridView>
+        <div className="bg-blue-500 p-4 rounded space-y-4">
+          <h1 className="font-semibold text-3xl text-white">
+            {formatPrice(salesData.totalSales)}
+          </h1>
+          <div className="text-white">
+            <p>Total Sales</p>
+            <p>Last 7 Days</p>
+          </div>
+        </div>
+      </GridView>
+      <div className="mt-10">
+        <h1 className="font-semibold text-2xl mb-4">
+          Last 7 days sales history
+        </h1>
+        <SalesChart data={salesData.sales} />
+      </div>
     </div>
   );
 }
