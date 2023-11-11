@@ -8,6 +8,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
 import SimilarProductsList from "@components/SimilarProductsList";
+import { auth } from "@/auth";
+import { updateOrCreateHistory } from "@models/historyModel";
 
 interface Props {
   params: {
@@ -21,6 +23,11 @@ const fetchProduct = async (productId: string) => {
   await startDb();
   const product = await ProductModel.findById(productId);
   if (!product) return redirect("/404");
+
+  const session = await auth();
+  if (session?.user) {
+    await updateOrCreateHistory(session.user.id, product._id.toString());
+  }
 
   return JSON.stringify({
     id: product._id,

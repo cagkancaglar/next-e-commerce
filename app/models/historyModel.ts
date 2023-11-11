@@ -26,5 +26,32 @@ const historySchema = new Schema<HistoryDocument>({
   ],
 });
 
+export const updateOrCreateHistory = async (
+  ownerId: string,
+  productId: string
+) => {
+  const history = await HistoryModel.findOneAndUpdate(
+    {
+      owner: ownerId,
+      "items.product": productId,
+    },
+    {
+      $set: { "items.$.date": Date.now() },
+    }
+  );
+
+  if (!history) {
+    await HistoryModel.findOneAndUpdate(
+      {
+        owner: ownerId,
+      },
+      {
+        $push: { items: { product: productId, date: Date.now() } },
+      },
+      { upsert: true }
+    );
+  }
+};
+
 const HistoryModel = models.History || model("History", historySchema);
 export default HistoryModel as Model<HistoryDocument>;

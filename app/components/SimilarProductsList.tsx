@@ -2,6 +2,7 @@ import React from "react";
 import HorizontalMenu from "@components/HorizontalMenu";
 import Image from "next/image";
 import { formatPrice } from "@utils/helper";
+import Link from "next/link";
 
 interface Props {
   products: {
@@ -21,19 +22,21 @@ export default function SimilarProductsList({ products }: Props) {
       <HorizontalMenu>
         {products.map((product) => {
           return (
-            <div className="w-[200px] space-y-2 mr-4" key={product.id}>
-              <Image
-                width={200}
-                height={200}
-                src={product.thumbnail}
-                alt={product.title}
-                className="rounded h-48 object-cover"
-              />
-              <div>
-                <h2 className="text-sm line-clamp-3">{product.title}</h2>
-                <h2>{formatPrice(product.price)}</h2>
+            <Link href={`/${product.title}/${product.id}`} key={product.id}>
+              <div className="w-[200px] space-y-2 mr-4">
+                <Image
+                  width={200}
+                  height={200}
+                  src={product.thumbnail}
+                  alt={product.title}
+                  className="rounded h-48 object-cover"
+                />
+                <div>
+                  <h2 className="text-sm line-clamp-3">{product.title}</h2>
+                  <h2>{formatPrice(product.price)}</h2>
+                </div>
               </div>
-            </div>
+            </Link>
           );
         })}
       </HorizontalMenu>
