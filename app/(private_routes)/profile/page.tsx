@@ -6,6 +6,33 @@ import { auth } from "@/auth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
+import OrderListPublic, { Orders } from "@components/OrderListPublic";
+import OrderModel from "@models/orderModel";
+
+const fetchLatestOrder = async () => {
+  const session = await auth();
+
+  if (!session?.user) {
+    return redirect("/auth/login");
+  }
+
+  await startDb();
+  const orders = await OrderModel.find({ userId: session.user.id })
+    .sort("-createdAt")
+    .limit(1);
+  const result: Orders[] = orders.map((order) => {
+    return {
+      id: order._id.toString(),
+      paymentStatus: order.paymentStatus,
+      date: order.createdAt.toString(),
+      total: order.totalAmount,
+      deliveryStatus: order.deliveryStatus,
+      products: order.orderItems,
+    };
+  });
+
+  return JSON.stringify(result);
+};
 
 export const fetchUserProfile = async () => {
   const session = await auth();
@@ -25,6 +52,7 @@ export const fetchUserProfile = async () => {
 
 export default async function Profile() {
   const profile = await fetchUserProfile();
+  const order = JSON.parse(await fetchLatestOrder());
 
   return (
     <div>
@@ -35,7 +63,7 @@ export default async function Profile() {
             id={profile.id}
             email={profile.email}
             name={profile.name}
-            avatar={profile.avatar}
+            avatar={profile.avatar || "/avatar.png"}
           />
         </div>
 
@@ -48,6 +76,8 @@ export default async function Profile() {
               See all orders
             </Link>
           </div>
+
+          <OrderListPublic orders={order} />
         </div>
       </div>
     </div>
