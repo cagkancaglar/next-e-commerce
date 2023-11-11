@@ -31,6 +31,7 @@ const fetchProduct = async (productId: string) => {
     price: product.price,
     sale: product.sale,
     rating: product.rating,
+    outOfStock: product.quantity <= 0,
   });
 };
 
@@ -80,6 +81,7 @@ export default async function Product({ params }: Props) {
         points={productInfo.bulletPoints}
         images={productImages}
         rating={productInfo.rating}
+        outOfStock={productInfo.outOfStock}
       />
 
       <div className="py-4 space-y-4">

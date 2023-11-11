@@ -9,8 +9,8 @@ interface Props {
 
 export default async function PrivateLayout({ children }: Props) {
   const session = await auth();
-  const user = session.user;
-  const isAdmin = user.role === "admin";
+  const user = session?.user;
+  const isAdmin = user?.role === "admin";
 
   if (!isAdmin) {
     return redirect("/auth/login");
