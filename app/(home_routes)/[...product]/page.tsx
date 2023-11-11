@@ -59,6 +59,20 @@ const fetchProductReviews = async (productId: string) => {
   return JSON.stringify(result);
 };
 
+const fetchSimilarProducts = async () => {
+  await startDb();
+
+  const products = await ProductModel.find().sort({ rating: -1 }).limit(10);
+  return products.map(({ _id, title, price, thumbnail }) => {
+    return {
+      id: _id.toString(),
+      title,
+      price: price.discounted,
+      thumbnail: thumbnail.url,
+    };
+  });
+};
+
 export default async function Product({ params }: Props) {
   const { product } = params;
   const productId = product[1];
@@ -70,6 +84,7 @@ export default async function Product({ params }: Props) {
   }
 
   const reviews = await fetchProductReviews(productId);
+  const similarProducts = await fetchSimilarProducts();
 
   return (
     <div className="p-4">
@@ -83,6 +98,8 @@ export default async function Product({ params }: Props) {
         rating={productInfo.rating}
         outOfStock={productInfo.outOfStock}
       />
+
+      {JSON.stringify(similarProducts)}
 
       <div className="py-4 space-y-4">
         <div className="flex justify-between items-center">
