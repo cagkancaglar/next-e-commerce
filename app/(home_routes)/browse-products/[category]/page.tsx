@@ -3,7 +3,7 @@ import startDb from "@lib/db";
 import ProductModel from "@models/productModel";
 import GridView from "@components/GridView";
 import ProductCard from "@components/ProductCard";
-import HorizontalMenu from "@components/HorizontalMenu";
+import CategoryMenu from "@components/CategoryMenu";
 
 interface LatestProduct {
   id: string;
@@ -51,7 +51,7 @@ export default async function ProductByCategory({ params }: Props) {
 
   return (
     <div className="my-4 space-y-4">
-      <HorizontalMenu />
+      <CategoryMenu />
       {parsedProducts.length ? (
         <GridView>
           {parsedProducts.map((product, i) => {

@@ -7,6 +7,7 @@ import { ObjectId, isValidObjectId } from "mongoose";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
+import SimilarProductsList from "@components/SimilarProductsList";
 
 interface Props {
   params: {
@@ -99,7 +100,7 @@ export default async function Product({ params }: Props) {
         outOfStock={productInfo.outOfStock}
       />
 
-      {JSON.stringify(similarProducts)}
+      <SimilarProductsList products={similarProducts} />
 
       <div className="py-4 space-y-4">
         <div className="flex justify-between items-center">
