@@ -44,21 +44,23 @@ const fetchFeaturedProducts = async () => {
   await startDb();
   const products = await FeaturedProductModel.find().sort("-createdAt");
 
-  return products.map(({ _id, title, banner, link, linkTitle }) => {
+  const results = products.map(({ _id, title, banner, link, linkTitle }) => {
     return {
       id: _id.toString(),
-      title: title,
+      title,
       banner: banner.url,
-      link: link,
+      link,
       linkTitle: linkTitle,
     };
   });
+
+  return JSON.stringify(results);
 };
 
 export default async function Home() {
   const latestProducts = await fetchLatestProducts();
   const parsedProducts = JSON.parse(latestProducts) as LatestProduct[];
-  const featuredProducts = await fetchFeaturedProducts();
+  const featuredProducts = JSON.parse(await fetchFeaturedProducts());
 
   return (
     <div className="my-4 space-y-4">
