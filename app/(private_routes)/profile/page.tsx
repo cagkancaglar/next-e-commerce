@@ -34,7 +34,7 @@ const fetchLatestOrder = async () => {
   return JSON.stringify(result);
 };
 
-export const fetchUserProfile = async () => {
+const fetchUserProfile = async () => {
   const session = await auth();
   if (!session) return redirect("/auth/signin");
 

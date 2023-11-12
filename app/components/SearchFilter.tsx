@@ -4,6 +4,7 @@ import React, { useState, ReactNode } from "react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { StarIcon } from "@heroicons/react/24/solid";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface Props {
   children: ReactNode;
@@ -13,11 +14,28 @@ export default function SearchFilter({ children }: Props) {
   const [rating, setRating] = useState([0, 5]);
   const [priceFilter, setPriceFilter] = useState("asc");
   const [applyRatingFilter, setApplyRatingFilter] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const query = searchParams.get("query");
+  const priceSort = searchParams.get("priceSort");
+
+  const lowToHigh = priceSort === "asc";
+  const highToLow = priceSort === "desc";
 
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
+
+        let url = "";
+
+        if (applyRatingFilter) {
+          url = `/search?query=${query}&minRating=${rating[0]}&maxRating=${rating[1]}&priceSort=${priceFilter}`;
+        } else {
+          url = `/search?query=${query}&priceSort=${priceFilter}`;
+        }
+
+        router.push(url);
       }}
       className="md:flex py-4 space-y-4"
     >
@@ -30,9 +48,10 @@ export default function SearchFilter({ children }: Props) {
                 crossOrigin={undefined}
                 name="type"
                 label="Low to heigh"
-                defaultChecked
+                defaultChecked={lowToHigh}
                 color="blue-gray"
                 className="text-sm"
+                onChange={() => setPriceFilter("asc")}
               />
             </div>
             <div>
@@ -40,7 +59,9 @@ export default function SearchFilter({ children }: Props) {
                 crossOrigin={undefined}
                 name="type"
                 label="Heigh to low"
+                defaultChecked={highToLow}
                 color="blue-gray"
+                onChange={() => setPriceFilter("desc")}
               />
             </div>
           </div>
@@ -69,6 +90,7 @@ export default function SearchFilter({ children }: Props) {
               ),
             }}
             onChange={(value) => {
+              setApplyRatingFilter(true);
               setRating(value as number[]);
             }}
           />
