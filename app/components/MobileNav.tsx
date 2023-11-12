@@ -12,7 +12,7 @@ import { PowerIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import useAuth from "@hooks/useAuth";
 import { MenuItems } from "../types";
-import SignOutButton from "./SignOutButton";
+import SignOutButton from "@components/SignOutButton";
 
 interface Props {
   open: boolean;

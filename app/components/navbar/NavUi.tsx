@@ -8,11 +8,12 @@ import {
   Spinner,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import ProfileMenu from "../ProfileMenu";
-import { MobileNav } from "../MobileNav";
-import CartIcon from "../CartIcon";
+import ProfileMenu from "@components/ProfileMenu";
+import { MobileNav } from "@components/MobileNav";
+import CartIcon from "@components/CartIcon";
 import { UserCircleIcon, ShoppingBagIcon } from "@heroicons/react/24/outline";
 import useAuth from "@hooks/useAuth";
+import SearchForm from "@components/SearchForm";
 
 interface Props {
   cartItemsCount: number;
@@ -52,6 +53,12 @@ export default function NavUi({ cartItemsCount, avatar }: Props) {
           >
             Next Ecom
           </Link>
+
+          <div className="flex justify-center flex-1">
+            <div className="w-full md:w-96 md:mx-0 mx-4">
+              <SearchForm submitTo="/search?query=" />
+            </div>
+          </div>
 
           <div className="hidden lg:flex gap-2 items-center">
             <CartIcon cartItems={cartItemsCount} />
