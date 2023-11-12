@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { ObjectId } from "mongoose";
 import { redirect } from "next/navigation";
 import React from "react";
+import WishlistProductCard from "@components/WishlistProductCard";
 
 const fetchProducts = async () => {
   const session = await auth();
@@ -40,7 +41,20 @@ const fetchProducts = async () => {
 
 export default async function Wishlist() {
   const products = await fetchProducts();
-  console.log(products);
 
-  return <div>Wishlist</div>;
+  if (!products.length)
+    return (
+      <h1 className="text-2xl opacity-50 text-center p-6 font-semibold">
+        There is no products inside your wishlist
+      </h1>
+    );
+
+  return (
+    <div className="space-y-4 p-4">
+      <h1 className="text-xl font-semibold">Your Wishlist</h1>
+      {products.map((product, i) => {
+        return <WishlistProductCard product={product} key={i} />;
+      })}
+    </div>
+  );
 }

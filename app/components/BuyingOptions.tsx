@@ -7,8 +7,7 @@ import { useParams } from "next/navigation";
 import useAuth from "@hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { HeartIcon } from "@heroicons/react/24/outline";
-import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
+import Wishlist from "@ui/Wishlist";
 
 interface Props {
   wishlist?: boolean;
@@ -90,11 +89,7 @@ export default function BuyingOptions({ wishlist }: Props) {
         variant="text"
         disabled={isPending}
       >
-        {wishlist ? (
-          <HeartIconSolid className="w-6 h-6 text-red-600" />
-        ) : (
-          <HeartIcon className="w-6 h-6" />
-        )}
+        <Wishlist isActive={wishlist} />
       </Button>
     </div>
   );
