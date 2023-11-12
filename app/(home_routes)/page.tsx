@@ -1,4 +1,3 @@
-"use server";
 import React from "react";
 import startDb from "@lib/db";
 import ProductModel from "@models/productModel";
