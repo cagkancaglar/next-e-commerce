@@ -60,7 +60,7 @@ export default function ProductView({
               out of stock
             </div>
           ) : (
-            <BuyingOptions />
+            <BuyingOptions wishlist />
           )}
         </div>
       </div>

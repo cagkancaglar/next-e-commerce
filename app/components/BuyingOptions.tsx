@@ -7,8 +7,14 @@ import { useParams } from "next/navigation";
 import useAuth from "@hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { HeartIcon } from "@heroicons/react/24/outline";
+import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
 
-export default function BuyingOptions() {
+interface Props {
+  wishlist?: boolean;
+}
+
+export default function BuyingOptions({ wishlist }: Props) {
   const [quantity, setQuantity] = useState(1);
   const [isPending, startTransition] = useTransition();
   const { product } = useParams();
@@ -60,6 +66,19 @@ export default function BuyingOptions() {
       </Button>
       <Button disabled={isPending} color="amber" className="rounded-full">
         Buy Now
+      </Button>
+      <Button
+        onClick={() => {
+          startTransition(async () => await addToCart());
+        }}
+        variant="text"
+        disabled={isPending}
+      >
+        {wishlist ? (
+          <HeartIconSolid className="w-6 h-6 text-red-600" />
+        ) : (
+          <HeartIcon className="w-6 h-6" />
+        )}
       </Button>
     </div>
   );
