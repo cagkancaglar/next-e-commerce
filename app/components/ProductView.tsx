@@ -13,6 +13,7 @@ interface Props {
   sale: number;
   rating: number;
   outOfStock: boolean;
+  isWishlist?: boolean;
 }
 
 export default function ProductView({
@@ -24,6 +25,7 @@ export default function ProductView({
   sale,
   rating,
   outOfStock,
+  isWishlist,
 }: Props) {
   return (
     <div className="flex lg:flex-row flex-col md:gap-4 gap-2">
@@ -60,7 +62,7 @@ export default function ProductView({
               out of stock
             </div>
           ) : (
-            <BuyingOptions wishlist />
+            <BuyingOptions wishlist={isWishlist} />
           )}
         </div>
       </div>

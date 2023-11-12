@@ -10,6 +10,7 @@ import React from "react";
 import SimilarProductsList from "@components/SimilarProductsList";
 import { auth } from "@/auth";
 import { updateOrCreateHistory } from "@models/historyModel";
+import WishlistModel from "@models/wishlistModel";
 
 interface Props {
   params: {
@@ -24,9 +25,17 @@ const fetchProduct = async (productId: string) => {
   const product = await ProductModel.findById(productId);
   if (!product) return redirect("/404");
 
+  let isWishlist = false;
+
   const session = await auth();
   if (session?.user) {
     await updateOrCreateHistory(session.user.id, product._id.toString());
+    const wishlist = await WishlistModel.findOne({
+      user: session.user.id,
+      products: product._id,
+    });
+
+    isWishlist = wishlist ? true : false;
   }
 
   return JSON.stringify({
@@ -40,6 +49,7 @@ const fetchProduct = async (productId: string) => {
     sale: product.sale,
     rating: product.rating,
     outOfStock: product.quantity <= 0,
+    isWishlist,
   });
 };
 
@@ -105,6 +115,7 @@ export default async function Product({ params }: Props) {
         images={productImages}
         rating={productInfo.rating}
         outOfStock={productInfo.outOfStock}
+        isWishlist={productInfo.isWishlist}
       />
 
       <SimilarProductsList products={similarProducts} />

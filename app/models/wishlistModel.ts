@@ -13,6 +13,6 @@ const wishlistSchema = new Schema<WishlistDocument>(
   { timestamps: true }
 );
 
-const WishlistModel = models.WishList || model("Wishlist", wishlistSchema);
+const WishlistModel = models.Wishlist || model("Wishlist", wishlistSchema);
 
 export default WishlistModel as Model<WishlistDocument>;
