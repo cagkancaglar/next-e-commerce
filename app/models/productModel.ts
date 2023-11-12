@@ -1,5 +1,5 @@
 import { Model, Schema, model, models } from "mongoose";
-import categories from "../utils/categories";
+import categories from "@utils/categories";
 
 export interface NewProduct {
   title: string;
@@ -16,7 +16,7 @@ export interface NewProduct {
   rating?: number;
 }
 
-interface ProductDocument extends NewProduct {
+export interface ProductDocument extends NewProduct {
   //virtual property
   sale: number;
 }

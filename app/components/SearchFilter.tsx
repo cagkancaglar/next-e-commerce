@@ -1,14 +1,26 @@
 "use client";
 import { Radio } from "@material-tailwind/react";
-import React, { useState } from "react";
+import React, { useState, ReactNode } from "react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { StarIcon } from "@heroicons/react/24/solid";
 
-export default function SearchFilter() {
+interface Props {
+  children: ReactNode;
+}
+
+export default function SearchFilter({ children }: Props) {
   const [rating, setRating] = useState([0, 5]);
+  const [priceFilter, setPriceFilter] = useState("asc");
+  const [applyRatingFilter, setApplyRatingFilter] = useState(false);
+
   return (
-    <div className="md:flex py-4 space-y-4">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+      className="md:flex py-4 space-y-4"
+    >
       <div className="md:border-r md:border-b-0 border-b border-gray-700 p-4 md:space-y-4 md:block flex space-x-8 md:space-x-0">
         <div>
           <p className="font-semibold">Price</p>
@@ -69,7 +81,7 @@ export default function SearchFilter() {
         </div>
       </div>
 
-      <div className="p-4 flex-1"></div>
-    </div>
+      <div className="p-4 flex-1">{children}</div>
+    </form>
   );
 }
