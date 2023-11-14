@@ -17,7 +17,7 @@ const authConfig: NextAuthConfig = {
         const { email, password } = credentials as LoginCredentials;
 
         const { user, error } = await fetch(
-          "http://localhost:3000/api/users/login",
+          `${process.env.BASE_URL}/api/users/login`,
           {
             method: "POST",
             body: JSON.stringify({ email, password }),
