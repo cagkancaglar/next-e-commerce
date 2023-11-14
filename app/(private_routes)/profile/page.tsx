@@ -36,11 +36,11 @@ const fetchLatestOrder = async () => {
 
 const fetchUserProfile = async () => {
   const session = await auth();
-  if (!session) return redirect("/auth/signin");
+  if (!session) return redirect("/auth/login");
 
   await startDb();
   const user = await UserModel.findById(session.user.id);
-  if (!user) return redirect("/auth/signin");
+  if (!user) return redirect("/auth/login");
   return {
     id: user._id.toString(),
     name: user.name,

@@ -1,5 +1,5 @@
 import React from "react";
-import NavUI from "./NavUi";
+import NavUI from "@components/navbar/NavUi";
 import { auth } from "@/auth";
 import CartModel from "@models/cartModel";
 import { Types } from "mongoose";
@@ -28,7 +28,6 @@ const getCartItemsCount = async () => {
     if (!session?.user) return 0;
 
     const userId = session.user.id;
-
     const cart = await CartModel.aggregate([
       { $match: { userId: new Types.ObjectId(userId) } },
       { $unwind: "$items" },
@@ -51,11 +50,12 @@ const getCartItemsCount = async () => {
 };
 
 export default async function Navbar() {
-  const cartItemsCount = await getCartItemsCount();
   const profile = await fetchUserProfile();
+  const cartItemsCount = await getCartItemsCount();
+
   return (
-    <>
+    <div>
       <NavUI cartItemsCount={cartItemsCount} avatar={profile?.avatar} />
-    </>
+    </div>
   );
 }

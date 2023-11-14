@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 let connection: typeof mongoose;
 
-const url = "mongodb://127.0.0.1:27017/next_e-commerce";
+const url = process.env.MONGODB_URI!;
 
 const startDb = async () => {
   try {
