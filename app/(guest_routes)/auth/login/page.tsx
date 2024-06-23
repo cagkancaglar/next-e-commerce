@@ -40,7 +40,7 @@ export default function Login() {
       });
 
       if (loginRes?.error === "CredentialsSignin") {
-        toast.error("Email/Password mismatch!");
+        toast.error("Email or password mismatch!");
       }
 
       if (!loginRes?.error) {

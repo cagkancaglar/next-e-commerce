@@ -81,7 +81,7 @@ export default function ProductCard({ product }: Props) {
           floated={false}
           className="relative w-full aspect-square m-0"
         >
-          <Image src={product.thumbnail} alt={product.title} fill />
+          <Image src={product.thumbnail} alt={product.title} fill className="object-cover"/>
           <div className="absolute right-0 p-2">
             <Chip color="red" value={`${product.sale} % off`} />
           </div>
@@ -93,7 +93,7 @@ export default function ProductCard({ product }: Props) {
             </h3>
             {product.rating ? <Rating value={product.rating} /> : null}
           </div>
-          <div className="flex justify-end items-center space-x-2 mb-2">
+          <div className="flex items-center space-x-2 mb-2">
             <Typography color="blue-gray" className="font-medium line-through">
               {formatPrice(product.price.base)}
             </Typography>

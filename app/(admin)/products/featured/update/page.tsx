@@ -16,7 +16,7 @@ const fetchFeaturedProduct = async (id: string) => {
 
   await startDb();
   const product = await FeaturedProductModel.findById(id);
-  if (!product) return redirect("404");
+  if (!product) return redirect("/404");
 
   const { _id, title, banner, link, linkTitle } = product;
 

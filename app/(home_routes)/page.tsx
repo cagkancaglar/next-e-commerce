@@ -50,7 +50,7 @@ const fetchFeaturedProducts = async () => {
       title,
       banner: banner.url,
       link,
-      linkTitle: linkTitle,
+      linkTitle,
     };
   });
 };
