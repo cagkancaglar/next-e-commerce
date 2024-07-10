@@ -45,16 +45,6 @@ export default function FeaturedProductsSlider({ products }: Props) {
               <div className="w-full h-[380px]">
                 <Image fill src={banner} alt={title} />
               </div>
-              <div className="absolute inset-0 p-5">
-                <div className="w-1/2 h-full flex flex-col items-start justify-center">
-                  <h1 className="text-3xl font-semibold text-left mb-2">
-                    {title}
-                  </h1>
-                  <Button color="blue-gray" onClick={() => router.push(link)}>
-                    {linkTitle}
-                  </Button>
-                </div>
-              </div>
             </div>
           );
         })}
